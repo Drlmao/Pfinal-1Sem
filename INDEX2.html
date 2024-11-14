@@ -25,8 +25,8 @@
 
             <!-- Filtros y búsqueda -->
             <div>
-                <label for="filter"> <strong>Filtrar por:</strong></label>
-                <select id="filter">
+              <label class="filtrarPor" for="filter"> <strong>Filtrar por:</strong></label>
+              <select id="filter">
                     <option value="name-asc">Nombre A-Z</option>
                     <option value="name-desc">Nombre Z-A</option>
                     <option value="date-asc">Fecha de vencimiento (próximas primero)</option>
@@ -34,6 +34,76 @@
                 </select>
             </div>
 
+            <div class="row">
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+            </div>
+      
+            <div class="row">
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat sold"></div>
+              <div class="seat sold"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+            </div>
+            <div class="row">
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat sold"></div>
+              <div class="seat sold"></div>
+            </div>
+            <div class="row">
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+            </div>
+            <div class="row">
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat sold"></div>
+              <div class="seat sold"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+            </div>
+            <div class="row">
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat"></div>
+              <div class="seat sold"></div>
+              <div class="seat sold"></div>
+              <div class="seat sold"></div>
+              <div class="seat"></div>
+            </div>
+          </div>
+      
+          <p class="text">
+            You have selected <span id="count">0</span> seat for a price of RS.<span
+              id="total"
+              >0</span
+            >
+          </p>
+      
             <!-- Motor de búsqueda -->
             <div class="search-engine" id="search-container">
                 <input type="text" id="task-search" placeholder="Buscar reservacion por nombre o asiento">
