@@ -2,48 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('email');
     const errorMessage = document.getElementById('error-message');
     const appContent = document.getElementById('app-content');
-    const emailForm = document.getElementById('email-form');
-    const userInfo = document.getElementById('user-info');
-    const userEmailDisplay = document.getElementById('user-email');
-    const logoutButton = document.getElementById('logout-button');
     const notificationsToggle = document.getElementById('notifications-toggle'); // Checkbox para notificaciones
     const notificationSettings = document.getElementById('notification-settings'); // Sección de notificaciones
 
-    // Verificar si el correo ya está guardado en localStorage
-    const savedEmail = localStorage.getItem('userEmail');
-    if (savedEmail) {
-        userEmailDisplay.textContent = savedEmail;
-        userInfo.style.display = 'block'; // Mostrar el contenedor de usuario
-        appContent.style.display = 'block'; // Mostrar el contenido de la aplicación
-        emailForm.style.display = 'none'; // Ocultar el formulario de email
-        notificationSettings.style.display = 'block'; // Mostrar configuración de notificaciones
-    }
+    
 
-    document.getElementById('submit-email').addEventListener('click', function() {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (emailPattern.test(emailInput.value)) {
-            errorMessage.style.display = 'none'; // Ocultar mensaje de error
-            localStorage.setItem('userEmail', emailInput.value); // Guardar correo en localStorage
-            userEmailDisplay.textContent = emailInput.value; // Mostrar correo en la UI
-            userInfo.style.display = 'block'; // Mostrar contenedor de usuario
-            appContent.style.display = 'block'; // Mostrar contenido de la aplicación
-            emailForm.style.display = 'none'; // Ocultar formulario de email
-            notificationSettings.style.display = 'block'; // Mostrar configuración de notificaciones
-        } else {
-            errorMessage.textContent = 'Por favor, ingrese un correo electrónico válido.';
-            errorMessage.style.display = 'block'; // Mostrar mensaje de error
+   
 
-        }
-    });
 
-    // Cerrar sesión
-    logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('userEmail'); // Eliminar el correo de localStorage
-        userInfo.style.display = 'none'; // Ocultar contenedor de usuario
-        appContent.style.display = 'none'; // Ocultar contenido de la aplicación
-        emailForm.style.display = 'block'; // Mostrar formulario de email
-        notificationSettings.style.display = 'none'; // Ocultar configuración de notificaciones
-    });
 
     // Pedir permiso para enviar notificaciones al usuario
     if ('Notification' in window) {
@@ -53,9 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // Verificar tareas periódicamente
-    setInterval(checkTaskDeadlines, 30 * 1000); // Verificar cada minuto
+ // Verificar tareas periódicamente
+ setInterval(checkTaskDeadlines, 30 * 1000); // Verificar cada minuto
+    
 
     // Manejar el estado del checkbox de notificaciones
     const notificationsEnabled = JSON.parse(localStorage.getItem('notificationsEnabled')) || false;
@@ -84,7 +50,6 @@ function addTask(e) {
     const title = document.getElementById('task-title').value.trim();
     const description = document.getElementById('task-description').value.trim();
     const dueDate = document.getElementById('task-due-date').value;
-    const priority = document.getElementById('task-priority').value;
 
     if (!title || !dueDate) {
         alert("Completa los campos faltantes.");
@@ -99,7 +64,6 @@ function addTask(e) {
                 title,
                 description,
                 dueDate,
-                priority,
                 completed: tasks[taskIndex].completed // Mantener el estado de completado
             };
         }
@@ -110,7 +74,6 @@ function addTask(e) {
             title,
             description,
             dueDate,
-            priority,
             completed: false
         };
         tasks.push(task);
@@ -142,7 +105,6 @@ function updateTaskList() {
 
     // Aplicar el filtro de ordenación
     if (filter === 'none') {
-        const priorityOrder = { 'alta': 0, 'media': 1, 'baja': 2 };
         filteredTasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
     } else if (filter === 'name-asc') {
         filteredTasks.sort((a, b) => a.title.localeCompare(b.title));
@@ -163,7 +125,7 @@ function updateTaskList() {
         taskItem.classList.add('task-item');
         taskItem.setAttribute('data-priority', task.priority);
         taskItem.innerHTML = `
-            <h3>${task.title} <small>(Prioridad: ${task.priority})</small></h3>
+            <h3>${task.title} <small></small></h3>
             <p class="description">${task.description}</p>
             <p>Fecha de vencimiento: ${task.dueDate}</p>
             <p>Estado: ${task.completed ? 'Completada' : 'Incompleta'}</p>
@@ -201,7 +163,6 @@ function editTask(id) {
         document.getElementById('task-title').value = task.title;
         document.getElementById('task-description').value = task.description;
         document.getElementById('task-due-date').value = task.dueDate;
-        document.getElementById('task-priority').value = task.priority;
         editTaskId = id; // Guardar el ID de la tarea que se está editando
     }
 }
