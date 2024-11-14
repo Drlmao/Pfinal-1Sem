@@ -8,57 +8,35 @@
     <link rel="stylesheet" href="normalize.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Formulario de inicio de sesión -->
-        <div id="email-form">
-            <h2>Ingrese su correo electrónico</h2>
-            <input type="email" id="email" placeholder="Correo electrónico" required>
-            <button id="submit-email">Enviar</button>
-            <strong><p id="error-message" style="color: rgb(241, 45, 45); display: none;"></p></strong>
-        </div>
-        
-
-        <!-- Información de usuario y botón de cerrar sesión -->
-        <div id="user-info" style="display: none;">
-            <p class="user-greet"> <strong>Bienvenido, <span id="user-email"></span></strong></p>
-            <button class="user-logout" id="logout-button">Cerrar Sesión</button>
-        </div>
+   
         <!-- Contenido principal de la aplicación (tareas) -->
-        <div id="app-content" style="display: none;">
-            <h1><b>EstudiaPro</b></h1>
-            <h2>Crea tus tareas o edita tus tareas</h2>
+        <img src="Banner.jpg" alt="banner1">
+
+            <h2>Crea o edita tus reservaciones</h2>
 
             <!-- Formulario para crear tareas -->
             <form id="task-form">
-                <input class="taskname" type="text" id="task-title" placeholder="Título de la tarea" required maxlength="30">
-                <textarea id="task-description" placeholder="Descripción de la tarea"></textarea>
+                <input class="taskname" type="text" id="task-title" placeholder="Nombre de la reservacion" required maxlength="30">
+                <textarea id="task-description" placeholder="Numero de la reservacion"></textarea>
                 <input type="date" id="task-due-date" required>
-                <p class="priority-level-text"><strong> Nivel de Prioridad:</strong></p>
-                <select id="task-priority" aria-placeholder="Nivel de Prioridad">
-                    <option value="baja">Baja</option>
-                    <option value="media">Media</option>
-                    <option value="alta">Alta</option>
-                </select>
-                <button type="submit">Agregar Tarea</button>
+                
+                <button type="submit">Agregar reservacion</button>
             </form>
 
             <!-- Filtros y búsqueda -->
             <div>
                 <label for="filter"> <strong>Filtrar por:</strong></label>
                 <select id="filter">
-                    <option value="none">Prioridad</option>
                     <option value="name-asc">Nombre A-Z</option>
                     <option value="name-desc">Nombre Z-A</option>
                     <option value="date-asc">Fecha de vencimiento (próximas primero)</option>
                     <option value="date-desc">Fecha de vencimiento (más lejanas primero)</option>
-                    <option value="status-asc">Incompletas primero</option>
-                    <option value="status-desc">Completas primero</option>
                 </select>
             </div>
 
             <!-- Motor de búsqueda -->
             <div class="search-engine" id="search-container">
-                <input type="text" id="task-search" placeholder="Buscar tarea por nombre o descripción">
+                <input type="text" id="task-search" placeholder="Buscar reservacion por nombre o asiento">
             </div>
 
             <!-- Lista de tareas -->
