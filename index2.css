@@ -1,49 +1,40 @@
-body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    margin: 0;
-    background: rgb(2,0,36);
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(121,9,56,1) 35%, rgba(0,212,255,1) 100%); 
-    padding: 0;
+@import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
 
-        background-color: #242333;
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-   font-family: "Lato", sans-serif;
-    margin: 0;
+* {
+  box-sizing: border-box;
 }
 
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+      background-color: #242333;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+ font-family: "Lato", sans-serif;
+  margin: 0;
+}
 
 .container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background: rgb(131,58,180);
-    background: radial-gradient(circle, rgba(131,58,180,1) 0%, rgba(107,102,212,1) 51%, rgba(69,156,252,1) 100%);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    transition: transform 0.3s ease-in-out; 
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background: rgb(131,58,180);
+  background: radial-gradient(circle, rgba(131,58,180,1) 0%, rgba(107,102,212,1) 51%, rgba(69,156,252,1) 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out; 
+  perspective: 1000px;
+  margin-bottom: 30px;
 }
 
 .container:hover {
-    transform: scale(1.03); 
-}
-.user-greet{
-    text-align: center;
-    color: #333;
-}
-.user-logout {
-    margin-left: 40%;
+  transform: scale(1.03); 
 }
 
-.priority-level-text {
-    margin-top: 0px;
-    margin-left: 3px;
-    margin-bottom: 3px;
-}
+
 h1 {
     text-align: center;
     color: #333;
@@ -80,131 +71,53 @@ textarea {
     height: 100px;
 }
 
-button {
-    padding: 10px;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    font-size: 16px;
-    background: rgb(20,170,222); 
-    transition: background 0.3s ease-in-out; 
-}
-
-button:hover {
-    background: rgb(56, 201, 87);
-}
-
-#notification-settings {
-    margin-top: 15px;
-    text-align: center;
-    color: #333;
-}
-#task-list {
-    margin-top: 20px;
-}
-#email {
-    height: auto;
-    width: 500px;
-}
-
-@import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
-
-.seat {
-    background-color: #444451;
-    height: 26px;
-    width: 32px;
-    margin: 3px;
-    font-size: 50px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-  }
-  
-  .seat.selected {
-    background-color: green;
-  }
-  
-  .seat.sold {
-    background-color: #fff;
-  }
-  
-  .seat:nth-of-type(2) {
-    margin-right: 18px;
-  }
-  
-  .seat:nth-last-of-type(2) {
-    margin-left: 18px
-  }
-  
-  .seat:not(.sold):hover {
-    cursor: pointer;
-    transform: scale(1.2);
-  }
-  
-  .showcase .seat:not(.sold):hover {
-    cursor: default;
-    transform: scale(1);
-  }
-
-  .row {
-    display:flex;
-  }
 
 
-.task-item {
-    background: rgb(119, 154, 250);
-    padding: 15px;
-    margin-bottom: 10px;
-    border: 1px solid #035474;
-    border-radius: 4px;
-    transition: background 0.3s;
+#titulo1{
+
+  color: #fff;
 }
 
-.task-item:hover {
-    background: #cde6f8;
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  background-color: #ffffff;
 }
 
-.task-item h3 {
-    margin: 0 0 10px;
+td {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  border: 2px solid #555;
+  border-radius: 10px;
+  background-color: #4CAF50; /* Asientos disponibles */
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.task-item p {
-    margin: 5px 0;
+td:hover {
+  background-color: #45a049;
 }
 
-.task-item button {
-    background: #0746bb;
-    margin-right: 5px;
+td.occupied {
+  background-color: #f44336; /* Asientos ocupados */
+  cursor: not-allowed;
 }
 
-.task-item button:hover {
-    background: #c9302c;
+td.occupied:hover {
+  background-color: #f44336;
 }
 
-.task-item button.complete {
-    background: #1edf3e;
+td.selected {
+  background-color: #ffeb3b; /* Asiento seleccionado */
+  color: black;
 }
 
-.task-item button.complete:hover {
-    background: #0b78d1;
-}
-.description {
-	word-wrap: break-word;
-}
-.search-engine {
-    display: flex;
-    flex-direction: column;
-    margin-top: 5px;
-    
-}
-
-.search-engine input[type='text'] {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #033474;
-    border-radius: 4px;
-    font-size: 16px;
-    background: rgb(189,205,255);
-    background: linear-gradient(90deg, rgba(189,205,255,1) 0%, rgba(226,233,255,1) 100%); 
+caption {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
