@@ -1,125 +1,62 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EstudiaPro</title>
-    <link rel="stylesheet" href="index2.css">
-    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="style.css" />
+
+    <title>Telecine</title>
 </head>
+<img src="Banner.jpg" alt="banner1" id="banner1">
 <body>
-   
-        <!-- Contenido principal de la aplicación (tareas) -->
-        <img src="Banner.jpg" alt="banner1">
+    <h1 id="titulo1">Reserva ahora</h1>
+    <form id="task-form">
+        <input class="taskname" type="text" id="task-title" placeholder="Nombre de la reservacion" required maxlength="30">
+        <textarea id="task-description" placeholder="Numero de asiento"></textarea>
+        <input type="date" id="task-due-date" required>
+        
+        <button type="submit">Agregar reservacion</button>
+    </form>
 
-            <h2>Crea o edita tus reservaciones</h2>
+    <!-- Estos son los asientos, falta que funcione la reservacion -->
 
-            <!-- Formulario para crear tareas -->
-            <form id="task-form">
-                <input class="taskname" type="text" id="task-title" placeholder="Nombre de la reservacion" required maxlength="30">
-                <textarea id="task-description" placeholder="Numero de la reservacion"></textarea>
-                <input type="date" id="task-due-date" required>
-                
-                <button type="submit">Agregar reservacion</button>
-            </form>
+    <table>
+        <caption>Mapa de Asientos</caption>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+          <td>11</td>
+          <td>12</td>
+        </tr>
+       
+        <tr>
+          <td>13</td>
+          <td>14</td>
+          <td>15</td>
+          <td>16</td>
+          <td>17</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td>20</td>
+          <td>21</td>
+          <td>22</td>
+          <td>23</td>
+          <td>24</td>
+        </tr>
+      </table>
+      <script src="JS1.js"></script>
 
-            <!-- Filtros y búsqueda -->
-            <div>
-              <label class="filtrarPor" for="filter"> <strong>Filtrar por:</strong></label>
-              <select id="filter">
-                    <option value="name-asc">Nombre A-Z</option>
-                    <option value="name-desc">Nombre Z-A</option>
-                    <option value="date-asc">Fecha de vencimiento (próximas primero)</option>
-                    <option value="date-desc">Fecha de vencimiento (más lejanas primero)</option>
-                </select>
-            </div>
-
-            <div class="row">
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-            </div>
-      
-            <div class="row">
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat sold"></div>
-              <div class="seat sold"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-            </div>
-            <div class="row">
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat sold"></div>
-              <div class="seat sold"></div>
-            </div>
-            <div class="row">
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-            </div>
-            <div class="row">
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat sold"></div>
-              <div class="seat sold"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-            </div>
-            <div class="row">
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat"></div>
-              <div class="seat sold"></div>
-              <div class="seat sold"></div>
-              <div class="seat sold"></div>
-              <div class="seat"></div>
-            </div>
-          </div>
-      
-          <p class="text">
-            You have selected <span id="count">0</span> seat for a price of RS.<span
-              id="total"
-              >0</span
-            >
-          </p>
-      
-            <!-- Motor de búsqueda -->
-            <div class="search-engine" id="search-container">
-                <input type="text" id="task-search" placeholder="Buscar reservacion por nombre o asiento">
-            </div>
-
-            <!-- Lista de tareas -->
-            <div id="task-list"></div>
-
-            <div id="notification-settings" style="display: none;">
-                <label for="notifications-toggle"> <strong>Activar notificaciones:</strong></label>
-                <input type="checkbox" id="notifications-toggle">
-            </div>
-            
-        </div>
-    </div>
-
-    <script src="index2.js"></script>
 </body>
 </html>
