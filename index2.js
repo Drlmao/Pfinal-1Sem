@@ -1,224 +1,103 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const emailInput = document.getElementById('email');
-    const errorMessage = document.getElementById('error-message');
-    const appContent = document.getElementById('app-content');
-    const notificationsToggle = document.getElementById('notifications-toggle'); // Checkbox para notificaciones
-    const notificationSettings = document.getElementById('notification-settings'); // Sección de notificaciones
+// Referencias al DOM
+const form = document.getElementById('task-form');
+const taskTitle = document.getElementById('task-title');
+const taskDescription = document.getElementById('task-description');
+const taskDueDate = document.getElementById('task-due-date');
+const table = document.querySelector('table');
 
-    
+// Almacenamiento de reservaciones
+let reservaciones = [];
 
-   
-
-
-
-    // Pedir permiso para enviar notificaciones al usuario
-    if ('Notification' in window) {
-        Notification.requestPermission().then(permission => {
-            if (permission !== 'granted') {
-                console.log('Permiso de notificación denegado.');
-            }
-        });
+// Función para agregar una reservación
+function agregarReservacion(nombre, asiento, fecha) {
+    // Verificar si el asiento ya está reservado
+    const existente = reservaciones.find(reserva => reserva.asiento === asiento);
+    if (existente) {
+        alert(`El asiento ${asiento} ya está reservado por ${existente.nombre}.`);
+        return;
     }
- // Verificar tareas periódicamente
- setInterval(checkTaskDeadlines, 30 * 1000); // Verificar cada minuto
-    
 
-    // Manejar el estado del checkbox de notificaciones
-    const notificationsEnabled = JSON.parse(localStorage.getItem('notificationsEnabled')) || false;
-    notificationsToggle.checked = notificationsEnabled;
+    // Agregar la reservación
+    reservaciones.push({ nombre, asiento, fecha });
+    mostrarReservaciones();
+}
 
-    notificationsToggle.addEventListener('change', function () {
-        const isChecked = notificationsToggle.checked;
-        localStorage.setItem('notificationsEnabled', JSON.stringify(isChecked));
-        console.log(`Notificaciones ${isChecked ? 'activadas' : 'desactivadas'}`);
+// Función para mostrar reservaciones en el mapa
+function mostrarReservaciones() {
+    // Limpiar estilos previos
+    Array.from(table.querySelectorAll('td')).forEach(td => td.classList.remove('reservado'));
+
+    reservaciones.forEach(({ nombre, asiento }) => {
+        const td = table.querySelector(`td:nth-child(${asiento})`);
+        if (td) {
+            td.classList.add('reservado');
+            td.title = `Reservado por ${nombre}`;
+        }
     });
+}
+
+// Función para editar una reservación
+function editarReservacion(asiento) {
+    const reserva = reservaciones.find(reserva => reserva.asiento === asiento);
+    if (!reserva) {
+        alert('No hay reservación para este asiento.');
+        return;
+    }
+
+    // Llenar el formulario con los datos existentes
+    taskTitle.value = reserva.nombre;
+    taskDescription.value = reserva.asiento;
+    taskDueDate.value = reserva.fecha;
+
+    // Eliminar la reservación actual
+    reservaciones = reservaciones.filter(reserva => reserva.asiento !== asiento);
+    mostrarReservaciones();
+}
+
+// Función para eliminar una reservación
+function eliminarReservacion(asiento) {
+    reservaciones = reservaciones.filter(reserva => reserva.asiento !== asiento);
+    mostrarReservaciones();
+}
+
+// Manejar envío del formulario
+form.addEventListener('submit', e => {
+    e.preventDefault();
+    const nombre = taskTitle.value.trim();
+    const asiento = taskDescription.value.trim();
+    const fecha = taskDueDate.value;
+
+    if (!nombre || !asiento || !fecha) {
+        alert('Por favor, completa todos los campos.');
+        return;
+    }
+
+    agregarReservacion(nombre, asiento, fecha);
+
+    // Limpiar el formulario
+    form.reset();
 });
 
-// Lógica de tareas
-let tasks = JSON.parse(localStorage.getItem('tasks')) || []; // Cargar tareas del Local Storage
-let editTaskId = null;
+// Manejar clics en el mapa de asientos
+table.addEventListener('click', e => {
+    if (e.target.tagName === 'TD') {
+        const asiento = e.target.textContent.trim();
 
-// Mostrar tareas existentes al cargar la página
-updateTaskList();
+        const opciones = prompt(`Opciones para asiento ${asiento}: 
+1. Editar 
+2. Eliminar 
+3. Cancelar`);
 
-document.getElementById('task-form').addEventListener('submit', addTask);
-document.getElementById('filter').addEventListener('change', updateTaskList); // Añadir un evento para filtrar al cambiar la selección
-
-function addTask(e) {
-    e.preventDefault();
-
-    const title = document.getElementById('task-title').value.trim();
-    const description = document.getElementById('task-description').value.trim();
-    const dueDate = document.getElementById('task-due-date').value;
-
-    if (!title || !dueDate) {
-        alert("Completa los campos faltantes.");
-        return;
-    }
-
-    if (editTaskId) {
-        const taskIndex = tasks.findIndex(t => t.id === editTaskId);
-        if (taskIndex !== -1) {
-            tasks[taskIndex] = {
-                id: editTaskId,
-                title,
-                description,
-                dueDate,
-                completed: tasks[taskIndex].completed // Mantener el estado de completado
-            };
-        }
-        editTaskId = null; // Reiniciar editTaskId
-    } else {
-        const task = {
-            id: Date.now(),
-            title,
-            description,
-            dueDate,
-            completed: false
-        };
-        tasks.push(task);
-    }
-
-    updateTaskList();
-    e.target.reset();
-    saveTasks(); // Guardar tareas en Local Storage
-}
-
-document.getElementById('task-search').addEventListener('input', updateTaskList);
-
-function updateTaskList() {
-    const taskList = document.getElementById('task-list');
-    taskList.innerHTML = '';
-
-    const filter = document.getElementById('filter').value;
-    const searchQuery = document.getElementById('task-search').value.toLowerCase();
-
-    let filteredTasks = [...tasks];
-
-    // Aplicar filtro de búsqueda
-    if (searchQuery) {
-        filteredTasks = filteredTasks.filter(task => 
-            task.title.toLowerCase().includes(searchQuery) || 
-            task.description.toLowerCase().includes(searchQuery)
-        );
-    }
-
-    // Aplicar el filtro de ordenación
-    if (filter === 'none') {
-        filteredTasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
-    } else if (filter === 'name-asc') {
-        filteredTasks.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (filter === 'name-desc') {
-        filteredTasks.sort((a, b) => b.title.localeCompare(a.title));
-    } else if (filter === 'date-asc') {
-        filteredTasks.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-    } else if (filter === 'date-desc') {
-        filteredTasks.sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
-    } else if (filter === 'status-asc') {
-        filteredTasks.sort((a, b) => a.completed - b.completed);
-    } else if (filter === 'status-desc') {
-        filteredTasks.sort((a, b) => b.completed - a.completed);
-    }
-
-    filteredTasks.forEach(task => {
-        const taskItem = document.createElement('div');
-        taskItem.classList.add('task-item');
-        taskItem.setAttribute('data-priority', task.priority);
-        taskItem.innerHTML = `
-            <h3>${task.title} <small></small></h3>
-            <p class="description">${task.description}</p>
-            <p>Fecha de vencimiento: ${task.dueDate}</p>
-            <p>Estado: ${task.completed ? 'Completada' : 'Incompleta'}</p>
-            <button onclick="toggleComplete(${task.id})">${task.completed ? 'Marcar como incompleta' : 'Marcar como completada'}</button>
-            <button onclick="editTask(${task.id})">Editar</button>
-            <button onclick="confirmDelete(${task.id})">Eliminar</button>
-        `;
-        taskList.appendChild(taskItem);
-    });
-}
-
-
-function toggleComplete(id) {
-    const task = tasks.find(t => t.id === id);
-    if (task) {
-        if (task.completed) {
-            if (confirm("¿Estás seguro de que deseas marcar esta tarea como incompleta?")) {
-                task.completed = false; // Marcar como incompleta
-                updateTaskList(); // Actualizar la lista para reflejar el cambio
-                saveTasks(); // Guardar tareas en Local Storage
-            }
-        } else {
-            if (confirm("¿Estás seguro de que deseas marcar esta tarea como completada?")) {
-                task.completed = true; // Marcar como completada
-                updateTaskList(); // Actualizar la lista para reflejar el cambio
-                saveTasks(); // Guardar tareas en Local Storage
-            }
+        switch (opciones) {
+            case '1':
+                editarReservacion(asiento);
+                break;
+            case '2':
+                eliminarReservacion(asiento);
+                break;
+            case '3':
+            default:
+                break;
         }
     }
-}
-
-function editTask(id) {
-    const task = tasks.find(t => t.id === id);
-    if (task) {
-        document.getElementById('task-title').value = task.title;
-        document.getElementById('task-description').value = task.description;
-        document.getElementById('task-due-date').value = task.dueDate;
-        editTaskId = id; // Guardar el ID de la tarea que se está editando
-    }
-}
-
-function confirmDelete(id) {
-    if (confirm("¿Estás seguro de que deseas eliminar esta tarea?")) {
-        deleteTask(id);
-    }
-}
-
-function deleteTask(id) {
-    tasks = tasks.filter(t => t.id !== id);
-    updateTaskList(); // Actualizar la lista de tareas
-}
-
-function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks)); // Guardar tareas en Local Storage
-}
-
-// Función para verificar las fechas de vencimiento
-// Función para verificar las fechas de vencimiento de las tareas
-function checkTaskDeadlines() {
-    const notificationsEnabled = JSON.parse(localStorage.getItem('notificationsEnabled'));
-    console.log("Checked deadlines  ")
-    if (!notificationsEnabled) {
-        console.log('Notificaciones desactivadas, no se enviarán recordatorios.');
-        return;
-    }
-
-    const now = new Date();
-    tasks.forEach(task => {
-        const dueDate = new Date(task.dueDate);
-        const timeDiff = dueDate - now;
-        const oneDay = 24 * 60 * 60 * 1000; // Milisegundos en un día
-
-        // Si la tarea no está completada y queda 1 día o menos
-        if (!task.completed && timeDiff <= oneDay && timeDiff > 0) {
-            showNotification(`La tarea "${task.title}" vence mañana`);
-        }
-
-        // Si la tarea está vencida y no está completada
-        if (!task.completed && timeDiff < 0) {
-            showNotification(`La tarea "${task.title}" ha vencido`);
-        }
-    });
-}
-
-
-// Función para mostrar notificaciones
-function showNotification(message) {
-    if (Notification.permission === 'granted') {
-        new Notification('Recordatorio de EstudiaPro', {
-            body: message,
-            image: "noti.png"
-        });
-    } else {
-        console.log("Permiso de notificación no concedido")
-    }
-}
+});
